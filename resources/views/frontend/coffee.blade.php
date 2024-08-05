@@ -115,12 +115,25 @@
 
         <div class="swiper review-slider">
             <div class="swiper-wrapper">
-
-
-
-               
-
-               
+            @foreach($reviews as $review)
+                <div class="swiper-slide box">
+                    <i class="fas fa-quote-left"></i>
+                    <i class="fas fa-quote-right"></i>
+                   
+                    <img src="{{ asset('assets/customer_images/' . $review->image) }}" alt="{{ $review->name }}">
+                    <div class="stars">
+                        
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>{{ $review->description }}</p>
+                    <h3>{{$review->name}}</h3>
+                    <span>{{$review->job_position}}</span>
+                </div>
+            @endforeach   
             </div>
             <div class="swiper-pagination"></div>
         </div>

@@ -11,11 +11,7 @@ class CoffeeController extends Controller
     public function index()
     {
         $coffees = CoffeeDrink::all();
-        return view('frontend.coffee', compact('coffees')); 
-    }
-    public function reviews()
-    {
         $reviews = CustomerReview::all();
-        return view('frontend.coffee', compact('reviews')); 
+        return view('frontend.coffee', compact('coffees','reviews')); 
     }
 }

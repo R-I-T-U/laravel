@@ -45,7 +45,6 @@ Route::put('backend/coffee/{id}',[CoffeeDrinkController::class,'update'])->name(
 // frontend routes
 
 Route::get('/', [CoffeeController::class, 'index'])->name('frontend.coffee');
-// Route::get('/', [CoffeeController::class, 'revs'])->name('frontend.coffee');
 
 //routes for loading review create form
 Route::get('backend/review/create',[CustomerReviewController::class,'create'])->name('backend.review.create')->middleware('auth');
