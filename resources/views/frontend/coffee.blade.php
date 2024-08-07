@@ -16,6 +16,7 @@
     <!-- Custom CSS File Link  -->
     <link rel="stylesheet" href="{{asset('assets/frontend/css/style.css')}}">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -90,21 +91,30 @@
         </div>
     </section>
 
-     <!-- MENU -->
-     <section class="menu" id="menu">
+    <!-- MENU -->
+    <section class="menu" id="menu">
         <h1 class="heading">our menu <span>popular menu</span></h1>
 
         <div class="box-container">
-            
-        @foreach($coffees as $coffee)
-                <a href="#" class="box">
-                    <img src="{{ asset('assets/images/coffee/' . $coffee->image) }}" alt="{{ $coffee->title }}">
-                    <div class="content">
-                        <h3>{{ $coffee->title }}</h3>
-                        <p>{{ $coffee->description }}</p>
-                        <span>${{ number_format($coffee->price, 2) }}</span>
-                    </div>
-                </a>
+
+            @foreach($coffees as $coffee)
+            <a href="#" class="box">
+                <img src="{{ asset('assets/images/coffee/' . $coffee->image) }}" alt="{{ $coffee->title }}">
+                <div class="content">
+                    <h3>{{ $coffee->title }}</h3>
+                    <p>{{ $coffee->description }}</p>
+
+                    @if ($coffee->discount > 0)
+                    <span style="text-decoration: line-through;">${{ number_format($coffee->price, 2) }}</span>&nbsp;&nbsp;&nbsp;
+                    <span>
+                        ${{ number_format($coffee->price - $coffee->discount, 2) }}
+                    </span>
+                    @else
+                    <span>${{ number_format($coffee->price, 2) }}</span>
+                    @endif
+
+                </div>
+            </a>
             @endforeach
         </div>
     </section>
@@ -115,25 +125,24 @@
 
         <div class="swiper review-slider">
             <div class="swiper-wrapper">
-            @foreach($reviews as $review)
+                @foreach($reviews as $review)
                 <div class="swiper-slide box">
                     <i class="fas fa-quote-left"></i>
                     <i class="fas fa-quote-right"></i>
-                   
+
                     <img src="{{ asset('assets/customer_images/' . $review->image) }}" alt="{{ $review->name }}">
+
                     <div class="stars">
-                        
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
+                        @for ($i = 0; $i < $review->rating; $i++)
+                            <i class="fas fa-star"></i>
+                            @endfor
                     </div>
+
                     <p>{{ $review->description }}</p>
                     <h3>{{$review->name}}</h3>
                     <span>{{$review->job_position}}</span>
                 </div>
-            @endforeach   
+                @endforeach
             </div>
             <div class="swiper-pagination"></div>
         </div>
@@ -143,13 +152,28 @@
     <section class="book" id="book">
         <h1 class="heading">booking <span>reserve a table</span></h1>
 
-        <form action="">
-            <input type="text" placeholder="Name" class="box">
-            <input type="email" placeholder="Email" class="box">
-            <input type="number" placeholder="Number" class="box">
-            <textarea name="" placeholder="Message" class="box" id="" cols="30" rows="10"></textarea>
-            <input type="submit" value="send message" class="btn">
+        <form action="{{ route('backend.reservation.store') }}" method="POST">
+            @csrf
+            <input type="text" name="name" placeholder="Name" class="box" required>
+            @error('name')
+            <span style="color:red;">{{$message}}</span>
+            @enderror
+            <input type="email" name="email" placeholder="Email" class="box" required>
+            @error('email')
+            <span style="color:red;">{{$message}}</span>
+            @enderror
+            <input type="number" name="phone" placeholder="Phone Number" class="box" required>
+            @error('phone')
+            <span style="color:red;">{{$message}}</span>
+            @enderror
+            <textarea name="message" placeholder="Message" class="box" id="" cols="30" rows="10" required></textarea>
+            @error('message')
+            <span style="color:red;">{{$message}}</span>
+            @enderror
+            <input type="submit" value="Send Message" class="btn">
+
         </form>
+
     </section>
 
     <!-- FOOTER -->
@@ -187,7 +211,7 @@
                 <a href="#"><i class="fab fa-twitter"></i> twitter</a>
                 <a href="#"><i class="fab fa-instagram"></i> instagram</a>
                 <!-- <a href="#"><i class="fab fa-linkedin"></i> linkedin</a> -->
-               
+
             </div>
         </div>
 
@@ -200,7 +224,41 @@
 
     <!-- Custom JS File Link  -->
     <script src="{{asset('assets/frontend/js/script.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if (session('success'))
+                Swal.fire({
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to the previous page or to a specific URL
+                        window.location.href = "{{ url()->previous() }}"; // Use this if you want to go back
+                        // Alternatively, you can refresh the page if needed:
+                        // location.reload();
+                    }
+                });
+            @elseif (session('error'))
+                Swal.fire({
+                    title: 'Error!',
+                    text: "{{ session('error') }}",
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Redirect to the previous page or to a specific URL
+                        window.location.href = "{{ url()->previous() }}"; // Use this if you want to go back
+                        // Alternatively, you can refresh the page if needed:
+                        // location.reload();
+                    }
+                });
+            @endif
+        });
+    </script>
 
 </body>
+
 
 </html>

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('header_logo')->nullable();
             $table->string('footer_logo')->nullable();
             $table->text('address');
-            $table->string('facebook_linkn')->nullable();
+            $table->string('facebook_link')->nullable();
             $table->string('insta_link')->nullable();
             $table->string('twitter_link')->nullable();
             $table->text('about_website')->nullable();

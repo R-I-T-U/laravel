@@ -1,9 +1,10 @@
 <?php
+
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CoffeeDrink; 
+use App\Models\CoffeeDrink;
 use Illuminate\Support\Facades\Auth;
 
 class CoffeeDrinkController extends Controller
@@ -19,9 +20,23 @@ class CoffeeDrinkController extends Controller
             'title' => 'required',
             'description' => 'required',
             'rank' => 'required|integer',
-            'price' => 'required|numeric',
-            'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000', // Adjusted validation
+            'price' => ['required', 'numeric', function ($attribute, $value, $fail) {
+                if ($value < 0) {
+                    $fail('The price cannot be negative.');
+                }
+            }],
+            'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000',
+            'discount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
+                $price = $request->input('price');
+
+                if ($value < 0) {
+                    $fail('The discount cannot be negative.');
+                } elseif ($value > $price) {
+                    $fail('The discount cannot be greater than the price.');
+                }
+            }]
         ]);
+        // dd($request->all());
 
         $data = $request->all();
         $data['created_by'] = Auth::id(); // Ensure `created_by` is set to authenticated user ID
@@ -41,38 +56,57 @@ class CoffeeDrinkController extends Controller
 
         return redirect()->route('backend.coffee.index');
     }
-    function index(){
-        $coffees = CoffeeDrink::orderBy('title')->get();
+    function index()
+    {
+        $coffees = CoffeeDrink::orderBy('rank')->get();
         //send data from controller to view
-        return view('backend.coffee.index',compact('coffees'));
+        return view('backend.coffee.index', compact('coffees'));
     }
-    function show($id){
+    function show($id)
+    {
         $coffee = CoffeeDrink::findOrFail($id);
-        return view('backend.coffee.show',compact('coffee'));
+        return view('backend.coffee.show', compact('coffee'));
     }
-    function  destroy($id){
+    function  destroy($id)
+    {
         $coffees = CoffeeDrink::findOrFail($id);
         $coffees->delete();
         return redirect()->route('backend.coffee.index');
     }
-    function edit($id){
+    function edit($id)
+    {
         $coffee = CoffeeDrink::findOrFail($id);
-        return view('backend.coffee.edit',compact('coffee'));
+        return view('backend.coffee.edit', compact('coffee'));
     }
 
-    function update(Request $request,$id){
+    function update(Request $request, $id)
+    {
         $request->validate([
             'title' => 'required',
             'description' => 'required',
             'rank' => 'required|integer',
-            'price' => 'required|numeric',
-            'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000', 
+            'price|discount' => ['required', 'numeric', function ($attribute, $value, $fail) {
+                if ($value < 0) {
+                    $fail('The price cannot be negative.');
+                }
+            }],
+            'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000',
+
+            'discount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
+                $price = $request->input('price');
+
+                if ($value < 0) {
+                    $fail('The discount cannot be negative.');
+                } elseif ($value > $price) {
+                    $fail('The discount cannot be greater than the price.');
+                }
+            }]
         ]);
         $coffees = CoffeeDrink::findOrFail($id);
-        if($coffees->update($request->all())){
-            request()->session()->flash('success','Coffee updated successfully');
+        if ($coffees->update($request->all())) {
+            request()->session()->flash('success', 'Coffee updated successfully');
         } else {
-            request()->session()->flash('error','Coffee update failed');
+            request()->session()->flash('error', 'Coffee update failed');
         }
         return redirect()->route('backend.coffee.index');
     }

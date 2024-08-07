@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('rank');
             $table->text('description');
             $table->string('image');
-            $table->unsignedBigInteger('created_by')->default(1); // Default value (ensure user ID 1 exists)
+            $table->unsignedBigInteger('created_by')->default(1);
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->softDeletes();
             $table->timestamps();

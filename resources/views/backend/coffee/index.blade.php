@@ -20,7 +20,7 @@
                             <th>Price</th>
                             <th>Discount</th>
                            
-                            <th>Action</th>
+                            <th width='20%'>Action</th>
                         </tr>
                         </tr>
                         @foreach($coffees as $key=> $coffee)

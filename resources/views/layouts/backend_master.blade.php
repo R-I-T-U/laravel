@@ -54,7 +54,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Settings
+                SETTINGS
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -84,6 +84,36 @@
                         <h6 class="collapse-header">REVIEWS</h6>
                         <a class="collapse-item" href="{{route('backend.review.create')}}">Create</a>
                         <a class="collapse-item" href="{{route('backend.review.index')}}">List</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
+                    aria-expanded="true" aria-controls="collapseFour">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Website Setup</span>
+                </a>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">REVIEWS</h6>
+                        <a class="collapse-item" href="{{route('backend.review.create')}}">Create</a>
+                        <a class="collapse-item" href="{{route('backend.review.index')}}">List</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"
+                    aria-expanded="true" aria-controls="collapseFive">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Customer Reservations</span>
+                </a>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Show</h6>
+                        
+                        <a class="collapse-item" href="{{route('backend.reservation.index')}}">Show</a>
                     </div>
                 </div>
             </li>

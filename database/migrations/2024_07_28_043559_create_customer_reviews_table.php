@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('customer_reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('name',100);
+            $table->string('name',100)->unique();
             $table->string('image');
             $table->string('job_position')->nullable();
             $table->integer('rank');
             $table->string('description');
-            $table->string('rating');
+            $table->integer('rating');
             $table->timestamps();
         });
     }

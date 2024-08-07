@@ -20,7 +20,7 @@ class CustomerReviewController extends Controller
             'name' => 'required',
             'description' => 'required',
             'rank' => 'required|integer',
-            'rating' => 'required',
+             'rating' => 'required|integer|between:1,5',
             'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000', // Adjusted validation
         ]);
         $data = $request->all();
@@ -41,7 +41,7 @@ class CustomerReviewController extends Controller
         return redirect()->route('backend.review.index');
     }
     function index(){
-        $reviews = CustomerReview::orderBy('name')->get();
+        $reviews = CustomerReview::orderBy('rank')->get();
         //send data from controller to view
         return view('backend.review.index',compact('reviews'));
     }
@@ -63,7 +63,7 @@ class CustomerReviewController extends Controller
             'name' => 'required',
             'description' => 'required',
             'rank' => 'required|integer',
-            'rating' => 'required',
+             'rating' => 'required|integer|between:1,5',
             'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000', 
         ]);
         $reviews = CustomerReview::findOrFail($id);
