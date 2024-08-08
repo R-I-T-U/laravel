@@ -88,20 +88,13 @@
                 </div>
             </li>
 
+            <!-- Nav Item - web setup -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
-                    aria-expanded="true" aria-controls="collapseFour">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Website Setup</span>
-                </a>
-                <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">REVIEWS</h6>
-                        <a class="collapse-item" href="{{route('backend.review.create')}}">Create</a>
-                        <a class="collapse-item" href="{{route('backend.review.index')}}">List</a>
-                    </div>
-                </div>
+                <a class="nav-link" href="{{route('backend.setting.index')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Website Setup</span></a>
             </li>
+
 
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive"

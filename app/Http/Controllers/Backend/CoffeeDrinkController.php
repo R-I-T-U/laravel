@@ -39,7 +39,7 @@ class CoffeeDrinkController extends Controller
         // dd($request->all());
 
         $data = $request->all();
-        $data['created_by'] = Auth::id(); // Ensure `created_by` is set to authenticated user ID
+        $data['created_by'] = Auth::id(); 
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -85,7 +85,7 @@ class CoffeeDrinkController extends Controller
             'title' => 'required',
             'description' => 'required',
             'rank' => 'required|integer',
-            'price|discount' => ['required', 'numeric', function ($attribute, $value, $fail) {
+            'price' => ['required', 'numeric', function ($attribute, $value, $fail) {
                 if ($value < 0) {
                     $fail('The price cannot be negative.');
                 }

@@ -51,3 +51,6 @@ Route::get('reservations/create', [ReservationController::class, 'create'])->nam
 Route::post('reservations', [ReservationController::class, 'store'])->name('backend.reservation.store');
 Route::get('reservations',[ReservationController::class,'index'])->name('backend.reservation.index');
 Route::delete('backend/reserve/{id}',[ReservationController::class,'destroy'])->name('backend.reservation.destroy');
+
+//setting
+Route::get('setting',[ReservationController::class,'index'])->name('backend.setting.index');
