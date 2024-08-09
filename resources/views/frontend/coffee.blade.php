@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee</title>
+    <title>{{$setting->website_name}}</title>
 
     <!-- SWIPER -->
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
@@ -15,6 +15,7 @@
 
     <!-- Custom CSS File Link  -->
     <link rel="stylesheet" href="{{asset('assets/frontend/css/style.css')}}">
+    <link rel="shortcut icon" href="{{ asset('assets/setting/logos/' . $setting->favicon) }}" type="image/x-icon">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -24,8 +25,11 @@
     <!-- HEADER -->
     <header class="header">
         <div id="menu-btn" class="fas fa-bars"></div>
+        
 
-        <a href="#" class="logo">coffee <i class="fas fa-mug-hot"></i></a>
+        <!-- <i class="fas fa-mug-hot"></i> -->
+        <a href="#" class="logo"> <img src="{{ asset('assets/setting/logos/' . $setting->logo) }}" alt="logo" height="30px"> {{$setting->website_name}}</a>
+
 
         <nav class="navbar">
             <a href="#home">home</a>
@@ -35,15 +39,15 @@
             <a href="#book">book</a>
         </nav>
 
-        <a href="#" class="btn">book a table</a>
+        <a href="#book" class="btn">book a table</a>
     </header>
 
     <!-- HOME -->
     <section class="home" id="home">
         <div class="row">
             <div class="content">
-                <h3>fresh coffee in the morning</h3>
-                <a href="#" class="btn">buy one now</a>
+                <h3>{{$setting->slogan}} </h3>
+                <!-- <a href="#" class="btn">buy one now</a> -->
             </div>
 
             <div class="image">
@@ -64,15 +68,13 @@
 
         <div class="row">
             <div class="image">
-                <img src="{{asset('assets/frontend/image/about-img.png')}}" alt="">
+            <img src="{{ asset('assets/setting/logos/' . $setting->feature_image) }}" alt="feature_image">
             </div>
 
             <div class="content">
-                <h3 class="title">what's make our coffee special!</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel rerum laboriosam reprehenderit ipsa id
-                    repellat odio illum, voluptas, necessitatibus assumenda adipisci. Hic, maiores iste? Excepturi illo
-                    dolore mollitia qui quia.</p>
-                <a href="#" class="btn">read more</a>
+                <h3 class="title">{{$setting->desc_heading}} </h3>
+                <p>{{$setting->description}} </p>
+                <!-- <a href="#" class="btn">read more</a> -->
                 <div class="icons-container">
                     <div class="icons">
                         <img src="{{asset('assets/frontend/image/about-icon-1.png')}}" alt="">
@@ -181,11 +183,9 @@
         <div class="box-container">
             <div class="box">
                 <h3>our branches</h3>
-                <a href="#"><i class="fas fa-arrow-right"></i> india</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> USA</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> france</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> africa</a>
-                <a href="#"><i class="fas fa-arrow-right"></i> japan</a>
+                <a href="#"><i class="fas fa-arrow-right"></i> {{$setting->branch1}} </a>
+                <a href="#"><i class="fas fa-arrow-right"></i> {{$setting->branch2}} </a>
+                <a href="#"><i class="fas fa-arrow-right"></i> {{$setting->branch3}} </a>
             </div>
 
             <div class="box">
@@ -199,17 +199,21 @@
 
             <div class="box">
                 <h3>contact info</h3>
-                <a href="#"><i class="fas fa-phone"></i> +123-456-7890</a>
-                <a href="#"><i class="fas fa-phone"></i> +111-222-3333</a>
-                <a href="#"><i class="fas fa-envelope"></i> coffee@gmail.com</a>
-                <a href="#"><i class="fas fa-envelope"></i> Perú, Lima</a>
+                <a href="#"><i class="fas fa-phone"></i> {{$setting->phone1}} </a>
+                @if($setting->phone2)
+                <a href="#"><i class="fas fa-phone"></i> {{ $setting->phone2 }}</a>
+                @endif
+
+
+                <a href="#"><i class="fas fa-envelope"></i> {{$setting->email}} </a>
+                <a href="#"><i class="fas fa-envelope"></i> {{$setting->address}} </a>
             </div>
 
             <div class="box">
                 <h3>contact info</h3>
-                <a href="#"><i class="fab fa-facebook-f"></i> facebook</a>
-                <a href="#"><i class="fab fa-twitter"></i> twitter</a>
-                <a href="#"><i class="fab fa-instagram"></i> instagram</a>
+                <a href="{{$setting->facebook_link}} "><i class="fab fa-facebook-f"></i> facebook</a>
+                <a href="{{$setting->twitter_link}} "><i class="fab fa-twitter"></i> twitter</a>
+                <a href="{{$setting->insta_link}} "><i class="fab fa-instagram"></i> instagram</a>
                 <!-- <a href="#"><i class="fab fa-linkedin"></i> linkedin</a> -->
 
             </div>
@@ -225,35 +229,35 @@
     <!-- Custom JS File Link  -->
     <script src="{{asset('assets/frontend/js/script.js')}}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            @if (session('success'))
-                Swal.fire({
-                    title: 'Success!',
-                    text: "{{ session('success') }}",
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Redirect to the previous page or to a specific URL
-                        window.location.href = "{{ url()->previous() }}"; // Use this if you want to go back
-                        // Alternatively, you can refresh the page if needed:
-                        // location.reload();
-                    }
-                });
-            @elseif (session('error'))
-                Swal.fire({
-                    title: 'Error!',
-                    text: "{{ session('error') }}",
-                    icon: 'error',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Redirect to the previous page or to a specific URL
-                        window.location.href = "{{ url()->previous() }}"; // Use this if you want to go back
-                        // Alternatively, you can refresh the page if needed:
-                        // location.reload();
-                    }
-                });
+        document.addEventListener('DOMContentLoaded', function() {
+            @if(session('success'))
+            Swal.fire({
+                title: 'Success!',
+                text: "{{ session('success') }}",
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to the previous page or to a specific URL
+                    window.location.href = "{{ url()->previous() }}"; // Use this if you want to go back
+                    // Alternatively, you can refresh the page if needed:
+                    // location.reload();
+                }
+            });
+            @elseif(session('error'))
+            Swal.fire({
+                title: 'Error!',
+                text: "{{ session('error') }}",
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirect to the previous page or to a specific URL
+                    window.location.href = "{{ url()->previous() }}"; // Use this if you want to go back
+                    // Alternatively, you can refresh the page if needed:
+                    // location.reload();
+                }
+            });
             @endif
         });
     </script>

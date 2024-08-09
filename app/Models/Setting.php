@@ -10,17 +10,7 @@ class Setting extends Model
     use HasFactory;
 
     protected $fillable = [
-        'updated_by',
-        'website_name',
-        'slogan',
-        'logo',
-        'favicon',
-        'header_logo',
-        'footer_logo',
-        'address',
-        'facebook_link',	
-        'insta_link',
-        'twitter_link',	
-        'about_website'
+        'updated_by',	'website_name',	'slogan',	'logo',	'favicon',	'feature_image',	'address',	'email',	'phone1',	'phone2',	'branch1','branch2','branch3',	'facebook_link',	'insta_link',	'twitter_link',	'desc_heading',	'description'
+
     ];
 }

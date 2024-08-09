@@ -58,21 +58,44 @@ class CustomerReviewController extends Controller
         return view('backend.review.edit',compact('review'));
     }
 
-    function update(Request $request,$id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'name' => 'required',
             'description' => 'required',
             'rank' => 'required|integer',
-             'rating' => 'required|integer|between:1,5',
-            'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000', 
+            'rating' => 'required|integer|between:1,5',
+            'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000',
         ]);
-        $reviews = CustomerReview::findOrFail($id);
-        if($reviews->update($request->all())){
-            request()->session()->flash('success','Review updated successfully');
+    
+        $review = CustomerReview::findOrFail($id);
+        $data = $request->except('image'); // Exclude image from $data initially
+    
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($review->image && file_exists(public_path('assets/customer_images/' . $review->image))) {
+                unlink(public_path('assets/customer_images/' . $review->image));
+            }
+    
+            // Store the new image
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/customer_images'), $fileName);
+            $data['image'] = $fileName;
         } else {
-            request()->session()->flash('error','Review update failed');
+            // Preserve the old image filename if no new image is uploaded
+            $data['image'] = $review->image;
         }
+    
+        // Update the review record
+        if ($review->update($data)) {
+            $request->session()->flash('success', 'Review updated successfully');
+        } else {
+            $request->session()->flash('error', 'Review update failed');
+        }
+    
         return redirect()->route('backend.review.index');
     }
+    
     
 }

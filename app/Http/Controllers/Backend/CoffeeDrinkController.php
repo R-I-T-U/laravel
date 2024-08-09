@@ -26,7 +26,7 @@ class CoffeeDrinkController extends Controller
                 }
             }],
             'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000',
-            'discount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
+            'discount' => ['nullable', 'numeric', function ($attribute, $value, $fail) use ($request) {
                 $price = $request->input('price');
 
                 if ($value < 0) {
@@ -39,7 +39,7 @@ class CoffeeDrinkController extends Controller
         // dd($request->all());
 
         $data = $request->all();
-        $data['created_by'] = Auth::id(); 
+        $data['created_by'] = Auth::id();
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -56,31 +56,48 @@ class CoffeeDrinkController extends Controller
 
         return redirect()->route('backend.coffee.index');
     }
-    function index()
+    public function index()
     {
-        $coffees = CoffeeDrink::orderBy('rank')->get();
-        //send data from controller to view
+        $coffees = CoffeeDrink::withTrashed()->orderBy('rank')->get();
         return view('backend.coffee.index', compact('coffees'));
     }
-    function show($id)
+
+    public function show($id)
     {
-        $coffee = CoffeeDrink::findOrFail($id);
+        // Retrieve the coffee item, including soft-deleted ones
+        $coffee = CoffeeDrink::withTrashed()->findOrFail($id);
         return view('backend.coffee.show', compact('coffee'));
     }
+
+
     function  destroy($id)
     {
         $coffees = CoffeeDrink::findOrFail($id);
         $coffees->delete();
         return redirect()->route('backend.coffee.index');
     }
+    public function restore($id)
+    {
+        $coffee = CoffeeDrink::withTrashed()->findOrFail($id);
+        $coffee->restore();
+        return redirect()->route('backend.coffee.index')->with('success', 'Coffee drink restored successfully');
+    }
+    public function forceDelete($id)
+    {
+        $coffee = CoffeeDrink::withTrashed()->findOrFail($id);
+        $coffee->forceDelete();
+        return redirect()->route('backend.coffee.index')->with('success', 'Coffee permanently deleted successfully');
+    }
+
+
     function edit($id)
     {
         $coffee = CoffeeDrink::findOrFail($id);
         return view('backend.coffee.edit', compact('coffee'));
     }
-
-    function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
+
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -91,8 +108,7 @@ class CoffeeDrinkController extends Controller
                 }
             }],
             'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000',
-
-            'discount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
+            'discount' => ['nullable', 'numeric', function ($attribute, $value, $fail) use ($request) {
                 $price = $request->input('price');
 
                 if ($value < 0) {
@@ -102,12 +118,33 @@ class CoffeeDrinkController extends Controller
                 }
             }]
         ]);
-        $coffees = CoffeeDrink::findOrFail($id);
-        if ($coffees->update($request->all())) {
-            request()->session()->flash('success', 'Coffee updated successfully');
+
+        $coffee = CoffeeDrink::findOrFail($id);
+
+        $data = $request->all();
+
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($coffee->image && file_exists(public_path('assets/images/coffee/' . $coffee->image))) {
+                unlink(public_path('assets/images/coffee/' . $coffee->image));
+            }
+
+            // Store the new image
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('assets/images/coffee'), $fileName);
+            $data['image'] = $fileName;
         } else {
-            request()->session()->flash('error', 'Coffee update failed');
+            // Preserve the old image filename if no new image is uploaded
+            $data['image'] = $coffee->image;
         }
+
+        if ($coffee->update($data)) {
+            $request->session()->flash('success', 'Coffee updated successfully');
+        } else {
+            $request->session()->flash('error', 'Coffee update failed');
+        }
+
         return redirect()->route('backend.coffee.index');
     }
 }

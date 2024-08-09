@@ -18,14 +18,19 @@ return new class extends Migration
             $table->string('slogan')->nullable();
             $table->string('logo');
             $table->string('favicon');
-            $table->string('header_logo')->nullable();
+            $table->string('feature_image');
             $table->text('address');
             $table->string('email');
+            $table->bigInteger('phone1');
+            $table->bigInteger('phone2')->nullable();
+            $table->string('branch1');
+            $table->string('branch2');
+            $table->string('branch3');
             $table->string('facebook_link')->nullable();
             $table->string('insta_link')->nullable();
             $table->string('twitter_link')->nullable();
-            $table->text('about_website')->nullable();
-            $table->string('feature_image')->nullable();
+            $table->text('desc_heading');
+            $table->text('description');
 
             $table->timestamps();
 

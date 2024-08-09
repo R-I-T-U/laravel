@@ -5,6 +5,8 @@ use App\Http\Controllers\Backend\CoffeeDrinkController;
 use App\Http\Controllers\Frontend\CoffeeController;
 use App\Http\Controllers\Backend\CustomerReviewController;
 use App\Http\Controllers\Backend\ReservationController;
+use App\Http\Controllers\Backend\SettingController;
+use App\Http\Controllers\UserController;
 
 
 //login route start
@@ -12,8 +14,8 @@ Route::get('/login',function (){
     return view('user.login');
 })->name('login');
 
-Route::post('login/verify',[\App\Http\Controllers\UserController::class,'verifyUser'])->name('login.verification');
-Route::get('logout',[\App\Http\Controllers\UserController::class,'logout'])->name('logout');
+Route::post('login/verify',[UserController::class,'verifyUser'])->name('login.verification');
+Route::post('logout', [UserController::class, 'logout'])->name('logout');
 
 Route::get('/backend/dashboard',function (){
     return view('backend.dashboard');
@@ -32,6 +34,9 @@ Route::get('backend/coffee/{id}',[CoffeeDrinkController::class,'show'])->name('b
 Route::delete('backend/coffee/{id}',[CoffeeDrinkController::class,'destroy'])->name('backend.coffee.destroy');
 Route::get('backend/coffee/{id}/edit',[CoffeeDrinkController::class,'edit'])->name('backend.coffee.edit');
 Route::put('backend/coffee/{id}',[CoffeeDrinkController::class,'update'])->name('backend.coffee.update');
+Route::get('backend/coffee/restore/{id}', [CoffeeDrinkController::class, 'restore'])->name('backend.coffee.restore');
+Route::get('backend/coffee/force-delete/{id}', [CoffeeDrinkController::class, 'forceDelete'])->name('backend.coffee.forceDelete');
+
 
 
 //frontend
@@ -53,4 +58,6 @@ Route::get('reservations',[ReservationController::class,'index'])->name('backend
 Route::delete('backend/reserve/{id}',[ReservationController::class,'destroy'])->name('backend.reservation.destroy');
 
 //setting
-Route::get('setting',[ReservationController::class,'index'])->name('backend.setting.index');
+Route::get('settings', [SettingController::class, 'index'])->name('backend.setting.index');
+Route::post('/backend/settings/update', [SettingController::class, 'update'])->name('backend.settings.update');
+
