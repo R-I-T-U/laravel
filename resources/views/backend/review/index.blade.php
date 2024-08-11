@@ -21,7 +21,7 @@
                             <th>Rank</th>
                             <th>Rating</th>
                             <th>Photo</th>
-                            <th>Action</th>
+                            <th width="15%">Action</th>
                         </tr>
                         </tr>
                         @foreach($reviews as $key=> $review)

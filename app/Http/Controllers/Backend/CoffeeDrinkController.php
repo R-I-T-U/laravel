@@ -26,7 +26,7 @@ class CoffeeDrinkController extends Controller
                 }
             }],
             'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000',
-            'discount' => ['nullable', 'numeric', function ($attribute, $value, $fail) use ($request) {
+            'discount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
                 $price = $request->input('price');
 
                 if ($value < 0) {
@@ -108,7 +108,7 @@ class CoffeeDrinkController extends Controller
                 }
             }],
             'image' => 'nullable|file|mimes:jpg,jpeg,bmp,png|max:10000',
-            'discount' => ['nullable', 'numeric', function ($attribute, $value, $fail) use ($request) {
+            'discount' => ['required', 'numeric', function ($attribute, $value, $fail) use ($request) {
                 $price = $request->input('price');
 
                 if ($value < 0) {

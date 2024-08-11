@@ -69,20 +69,20 @@
                                         Login
                                     </button>
                                     <hr>
-                                    <a class="btn btn-google btn-user btn-block">
+                                    <!-- <a class="btn btn-google btn-user btn-block">
                                         <i class="fab fa-google fa-fw"></i> Login with Google
                                     </button>
                                     <a href="index.html" class="btn btn-facebook btn-user btn-block">
                                         <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                    </a>
+                                    </a> -->
                                 </form>
-                                <hr>
+                                <!-- <hr>
                                 <div class="text-center">
                                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                                 </div>
                                 <div class="text-center">
                                     <a class="small" href="register.html">Create an Account!</a>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

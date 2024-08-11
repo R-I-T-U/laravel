@@ -107,12 +107,12 @@
                     <p>{{ $coffee->description }}</p>
 
                     @if ($coffee->discount > 0)
-                    <span style="text-decoration: line-through;">${{ number_format($coffee->price, 2) }}</span>&nbsp;&nbsp;&nbsp;
+                    <span style="text-decoration: line-through;">Rs{{ number_format($coffee->price, 2) }}</span>&nbsp;&nbsp;&nbsp;
                     <span>
-                        ${{ number_format($coffee->price - $coffee->discount, 2) }}
+                        Rs{{ number_format($coffee->price - $coffee->discount, 2) }}
                     </span>
                     @else
-                    <span>${{ number_format($coffee->price, 2) }}</span>
+                    <span>Rs{{ number_format($coffee->price, 2) }}</span>
                     @endif
 
                 </div>
@@ -211,15 +211,24 @@
 
             <div class="box">
                 <h3>contact info</h3>
+                @if($setting->facebook_link)
                 <a href="{{$setting->facebook_link}} "><i class="fab fa-facebook-f"></i> facebook</a>
+                @endif
+                @if($setting->twitter_link)
                 <a href="{{$setting->twitter_link}} "><i class="fab fa-twitter"></i> twitter</a>
+                @endif
+                @if($setting->insta_link)
                 <a href="{{$setting->insta_link}} "><i class="fab fa-instagram"></i> instagram</a>
+                @endif
+                <!-- <a href="{{$setting->facebook_link}} "><i class="fab fa-facebook-f"></i> facebook</a>
+                <a href="{{$setting->twitter_link}} "><i class="fab fa-twitter"></i> twitter</a>
+                <a href="{{$setting->insta_link}} "><i class="fab fa-instagram"></i> instagram</a> -->
                 <!-- <a href="#"><i class="fab fa-linkedin"></i> linkedin</a> -->
 
             </div>
         </div>
 
-        <div class="credit">created by <span>mr. web designer</span> | all rights reserved</div>
+        <!-- <div class="credit">created by <span>mr. web designer</span> | all rights reserved</div> -->
     </section>
 
 
